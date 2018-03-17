@@ -15,7 +15,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="88dp"
-        android:text="00:00"
+        android:text="@string/timer"
         android:textColor="@color/white"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -26,6 +26,7 @@
 
     <ImageView
         android:id="@+id/recordButton"
+        android:contentDescription="@string/play_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -36,7 +37,7 @@
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/stopButton"
-        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintHorizontal_bias="0.616"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.85"
@@ -44,10 +45,11 @@
 
     <ImageView
         android:id="@+id/stopButton"
+        android:contentDescription="@string/stop_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="44dp"
+        android:layout_marginEnd="56dp"
         android:layout_marginTop="8dp"
         android:clickable="true"
         android:focusable="true"
@@ -59,6 +61,7 @@
 
     <ImageButton
         android:id="@+id/imageButton2"
+        android:contentDescription="@string/file_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -71,5 +74,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.006"
         app:srcCompat="@android:drawable/sym_contact_card" />
+
 
 </android.support.constraint.ConstraintLayout>
