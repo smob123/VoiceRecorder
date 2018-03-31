@@ -60,7 +60,7 @@
         app:srcCompat="@drawable/stop_button" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/savedFiles"
         android:contentDescription="@string/file_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

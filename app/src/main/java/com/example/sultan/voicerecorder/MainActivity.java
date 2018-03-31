@@ -1,33 +1,35 @@
 package com.example.sultan.voicerecorder;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageView recordButton, stopButton;
+    private ImageView recordButton, stopButton;
+    private ImageButton openDir;
     private TextView timer;
     private boolean recording;
     private int min = 0, sec = 0, hour = 0;
     private Handler handler;
     private MediaRecorder recorder;
-    private ArrayList<File> fileList = new ArrayList<File>();
-    File recordedFile = new File(Environment.getExternalStorageDirectory(), "Voice Recorder");
-    private String filePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+    private File recordedFile = new File(Environment.getExternalStorageDirectory(), "Voice Recorder");
+    private String filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         defineVariables();
         recordHandler();
+        showRecordings();
     }
 
     private void recordHandler() {
@@ -101,6 +104,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void showRecordings() {
+        openDir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, recorded_files.class));
+            }
+        });
+    }
+
     private String updateTimer() {
         if (sec > 59) {
             min++;
@@ -141,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         filePath = checkPath + "/Voice note" + i + ".mp3";
-        System.out.println(filePath);
     }
 
     private void AccessFiles() {
@@ -151,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void defineVariables() {
+        openDir = findViewById(R.id.savedFiles);
         timer = findViewById(R.id.Timer);
         handler = new Handler();
         recordButton = findViewById(R.id.recordButton);
