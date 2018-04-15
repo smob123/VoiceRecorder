@@ -52,7 +52,7 @@ public class recorded_files extends AppCompatActivity implements AdapterView.OnI
     }
 
     /*
-     *   get selected file from storage and play it
+     *   get selected file from storage and play it.
      */
 
     @Override
