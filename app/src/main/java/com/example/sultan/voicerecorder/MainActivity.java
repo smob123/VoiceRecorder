@@ -22,13 +22,13 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private ImageView recordButton, stopButton;
-    private ImageButton openDir;
-    private TextView timer;
+    private ImageButton openDir; //displays recorded files
+    private TextView timer; //recording time
     private boolean recording;
     private int min = 0, sec = 0, hour = 0;
     private Handler handler;
     private MediaRecorder recorder;
-    private File recordedFile = new File(Environment.getExternalStorageDirectory(), "Voice Recorder");
+    private File recordedFile = new File(Environment.getExternalStorageDirectory(), "Voice Recorder"); //recorded files' path
     private String filePath;
 
     @Override
@@ -41,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
         showRecordings();
     }
 
+    /*
+     *  calls all initial methods
+     */
     private void recordHandler() {
         recording = false;
 
@@ -49,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
         StopButtonHandler();
     }
 
+    /*
+     * get mic and storage permissions
+     */
     private void getPermissions() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -60,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * handle starting recording
+     */
     private void PlayButtonHandlner() {
         recordButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -88,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
     });
 }
 
+    /*
+     * handle stopping recording
+     */
     private void StopButtonHandler() {
         stopButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -104,6 +116,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /*
+     * start recorded_files.xml
+     */
     public void showRecordings() {
         openDir.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +128,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /*
+     * update displayed timer
+     */
     private String updateTimer() {
         if (sec > 59) {
             min++;
@@ -129,11 +147,15 @@ public class MainActivity extends AppCompatActivity {
         return String.format(Locale.US, "%02d", min) + ":" + String.format(Locale.US, "%02d", sec);
     }
 
+    /*
+     * handle setting up mediaRecorder object
+     */
     private void createRecorder() {
         try {
             recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             recorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
+            recorder.setAudioSamplingRate(1600);
             AccessFiles();
             FileNaming();
             recorder.setOutputFile(filePath);
@@ -142,6 +164,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * handle file names to be stored
+     */
     private void FileNaming() {
         String checkPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Voice Recorder";
         File checkFile = new File(checkPath);
@@ -155,6 +180,9 @@ public class MainActivity extends AppCompatActivity {
         filePath = checkPath + "/Voice note" + i + ".mp3";
     }
 
+    /*
+     * try to access directory, or create one if it does not exist
+     */
     private void AccessFiles() {
         if (!recordedFile.exists()) {
             recordedFile.mkdir();
@@ -170,6 +198,9 @@ public class MainActivity extends AppCompatActivity {
         recorder = new MediaRecorder();
     }
 
+    /*
+     * keeps track of time
+     */
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
