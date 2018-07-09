@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -23,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView recordButton, stopButton;
     private ImageButton openDir; //displays recorded files
-    private TextView timer; //recording time
+    private TextView timer; //handles recording time
     private boolean recording;
     private int min = 0, sec = 0, hour = 0;
     private Handler handler;

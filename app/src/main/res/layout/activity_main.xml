@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.sultan.voicerecorder.MainActivity">
 
-
     <TextView
         android:id="@+id/Timer"
         android:layout_width="wrap_content"
@@ -74,6 +73,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.006"
         app:srcCompat="@android:drawable/sym_contact_card" />
-
 
 </android.support.constraint.ConstraintLayout>
