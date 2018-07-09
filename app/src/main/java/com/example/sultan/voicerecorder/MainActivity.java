@@ -152,9 +152,10 @@ public class MainActivity extends AppCompatActivity {
     private void createRecorder() {
         try {
             recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            recorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
+            recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
-            recorder.setAudioSamplingRate(1600);
+            recorder.setAudioEncodingBitRate(48000);
+            recorder.setAudioSamplingRate(16000);
             AccessFiles();
             FileNaming();
             recorder.setOutputFile(filePath);
@@ -176,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
             i = file_list.length + 1;
         }
 
-        filePath = checkPath + "/Voice note" + i + ".mp3";
+        filePath = checkPath + "/Voice note" + i + ".MPEG4";
     }
 
     /*
