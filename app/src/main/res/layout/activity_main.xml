@@ -25,7 +25,6 @@
 
     <ImageView
         android:id="@+id/recordButton"
-        android:contentDescription="@string/play_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -33,6 +32,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:clickable="true"
+        android:contentDescription="@string/play_button"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/stopButton"
@@ -44,13 +44,13 @@
 
     <ImageView
         android:id="@+id/stopButton"
-        android:contentDescription="@string/stop_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="56dp"
         android:layout_marginTop="8dp"
         android:clickable="true"
+        android:contentDescription="@string/stop_button"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,12 +60,12 @@
 
     <ImageButton
         android:id="@+id/savedFiles"
-        android:contentDescription="@string/file_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:contentDescription="@string/file_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.975"

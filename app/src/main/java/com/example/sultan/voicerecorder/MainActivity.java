@@ -23,10 +23,10 @@ public class MainActivity extends AppCompatActivity {
     private ImageView recordButton, stopButton;
     private ImageButton openDir; //displays recorded files
     private TextView timer; //handles recording time
-    private boolean recording;
+    private boolean recording, paused = false;
     private int min = 0, sec = 0, hour = 0;
-    private Handler handler;
-    private MediaRecorder recorder;
+    private Handler handler; //responsible for keeping track of recording time
+    private MediaRecorder recorder; //responsible for recording audio
     private File recordedFile = new File(Environment.getExternalStorageDirectory(), "Voice Recorder"); //recorded files' path
     private String filePath;
 
@@ -35,13 +35,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        defineVariables();
+        //button to view saved saved audio records
+        openDir = findViewById(R.id.savedFiles);
+        //the actual timer on the screen
+        timer = findViewById(R.id.Timer);
+        handler = new Handler();
+        //record, and stop recording buttons
+        recordButton = findViewById(R.id.recordButton);
+        stopButton = findViewById(R.id.stopButton);
+        //initialize the MediaRecoder
+        recorder = new MediaRecorder();
+
+        //set the recording events
         recordHandler();
         showRecordings();
     }
 
     /*
-     *  calls all initial methods
+     *  gets permissions, and sets button onClick events
      */
     private void recordHandler() {
         recording = false;
@@ -71,11 +82,13 @@ public class MainActivity extends AppCompatActivity {
     private void PlayButtonHandlner() {
         recordButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                if (!recording) {
+                //if the recording is not fully stopped, and not paused
+                if (!recording && !paused) {
                     recording = true;
-                    runnable.run();
-                    recordButton.setImageResource(R.drawable.pause_button);
+                    runnable.run(); //start the timer
+                    recordButton.setImageResource(R.drawable.pause_button); //change the record button's image to a pause icon image
                     try {
+                        //reset the recorder, and start recording
                         createRecorder();
                         recorder.prepare();
                         recorder.start();
@@ -83,14 +96,22 @@ public class MainActivity extends AppCompatActivity {
                     catch(Exception e){
                         e.printStackTrace();
                     }
+                    //set the output file
                     recorder.setOutputFile(filePath);
-                } else {
+                    //if currently recording
+                } else if(recording && !paused) {
                     recording = false;
-                    recorder.stop();
-                    recorder.reset();
+                    paused = true;
+                    recorder.pause(); //pause recording
 
-                    handler.removeCallbacks(runnable);
-                    recordButton.setImageResource(R.drawable.record_button);
+                    handler.removeCallbacks(runnable); //stop the timer
+                    recordButton.setImageResource(R.drawable.record_button); //reset the image
+                }
+                else {
+                    //otherwise, resume recording
+                    recorder.resume();
+                    recording = true;
+                    paused = false;
                 }
         }
     });
@@ -102,7 +123,9 @@ public class MainActivity extends AppCompatActivity {
     private void StopButtonHandler() {
         stopButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                //if currently recording
                 if (recording) {
+                    //reset the recorder, and the timer
                     recording = false;
                     handler.removeCallbacks(runnable);
                     sec = min = 0;
@@ -116,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*
-     * start recorded_files.xml
+     * go to the recorded files screen
      */
     public void showRecordings() {
         openDir.setOnClickListener(new View.OnClickListener() {
@@ -152,10 +175,8 @@ public class MainActivity extends AppCompatActivity {
     private void createRecorder() {
         try {
             recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
-            recorder.setAudioEncodingBitRate(48000);
-            recorder.setAudioSamplingRate(16000);
+            recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             AccessFiles();
             FileNaming();
             recorder.setOutputFile(filePath);
@@ -168,16 +189,20 @@ public class MainActivity extends AppCompatActivity {
      * handle file names to be stored
      */
     private void FileNaming() {
+        //the directory where the recorded files are stored
         String checkPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Voice Recorder";
         File checkFile = new File(checkPath);
+        //get the files in the directory
         File file_list[] = checkFile.listFiles();
-        int i = 1;
+        int i = 1; //the number of the new recorded file
 
+        //check if there is more than one file
         if(file_list.length > 0) {
             i = file_list.length + 1;
         }
 
-        filePath = checkPath + "/Voice note" + i + ".MPEG4";
+        //set the path, and name of the new file
+        filePath = checkPath + "/Voice note" + i + ".3gp";
     }
 
     /*
@@ -189,15 +214,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void defineVariables() {
-        openDir = findViewById(R.id.savedFiles);
-        timer = findViewById(R.id.Timer);
-        handler = new Handler();
-        recordButton = findViewById(R.id.recordButton);
-        stopButton = findViewById(R.id.stopButton);
-        recorder = new MediaRecorder();
-    }
-
     /*
      * keeps track of time
      */
@@ -205,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             if (recording) {
+                //update the timer once every second
                 handler.postDelayed(runnable, 1000);
                 timer.setText(updateTimer());
                 sec++;
